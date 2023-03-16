@@ -9,12 +9,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -28,17 +34,8 @@ public class ConsultaApiApplication {
 	}
 
 
-	@Configuration
-	public class SpringFoxConfig {
-		@Bean
-		public Docket api() {
-			return new Docket(DocumentationType.SWAGGER_2)
-					.select()
-					.apis(RequestHandlerSelectors.any())
-					.paths(PathSelectors.any())
-					.build();
-		}
-
-	}
-
 }
+
+
+
+

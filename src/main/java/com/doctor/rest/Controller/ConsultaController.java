@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @EnableSwagger2
+@RequestMapping("/api/consulta/")
 public class ConsultaController {
    @Autowired
     private PacienteRepository pacienteRepository;

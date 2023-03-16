@@ -17,7 +17,7 @@ import java.util.Date;
 @Entity
 public class Consulta {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate DataConsulta;

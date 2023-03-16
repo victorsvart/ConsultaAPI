@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 public class Paciente {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
 
     private String firstName;
