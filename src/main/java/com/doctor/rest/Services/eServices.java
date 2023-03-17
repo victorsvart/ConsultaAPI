@@ -1,5 +1,9 @@
 package com.doctor.rest.Services;
 
+import com.doctor.rest.Dto.DtoForRequests.ConsultaDTO;
+import com.doctor.rest.Dto.DtoForRequests.ConsultaPacienteDTO;
+import com.doctor.rest.Dto.DtoForResponse.ConsultaParaPaciente;
+import com.doctor.rest.Dto.DtoForResponse.PacienteComConsulta;
 import com.doctor.rest.Dto.PacienteResponse;
 import com.doctor.rest.Models.Consulta;
 import com.doctor.rest.Models.Paciente;
@@ -10,6 +14,9 @@ import com.doctor.rest.Repo.ProcedimentosRealizadosRepository;
 import com.doctor.rest.Repo.UserRepository;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -78,6 +85,31 @@ public class eServices {
     public List<PacienteResponse> getConsultasPaciente() {
         return pacienteRepository.getConsultasPaciente();
     }
+    public PacienteComConsulta getConsultaQuery(String rg){
+        List<ConsultaPacienteDTO> pacienteRequested =  pacienteRepository.findByKeyword(rg);
+        PacienteComConsulta paciente = new PacienteComConsulta();
+        ArrayList<Consulta> gettedConsulta = new ArrayList<>();
+        for (ConsultaPacienteDTO item: pacienteRequested)
+        {
+            paciente.setFirstName(item.getFirstName());
+            paciente.setLastName(item.getLastName());
+            paciente.setRG(item.getRG());
+        }
+        List<ConsultaDTO> consultaRequested = consultaRepository.findByKeyword(rg);
+        for (ConsultaDTO item : consultaRequested)
+        {
+            String DataConsulta = item.getDataConsulta();
+            String HorarioConsulta = item.getHorarioConsulta();
+            Consulta consulta = new Consulta();
+            consulta.setDataConsulta(LocalDate.parse(DataConsulta));
+            consulta.setHorarioConsulta(HorarioConsulta);
+            gettedConsulta.add(consulta);
+        }
+        paciente.setConsul(gettedConsulta);
+        return paciente;
+
+    }
+
 
     public List<Consulta> addConsulta(String rg, Consulta consulta) {
         Paciente paciente = pacienteRepository.findByRG(rg).get();
