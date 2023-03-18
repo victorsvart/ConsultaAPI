@@ -41,6 +41,7 @@ public class Paciente {
     private String Profissao;
 
     @OneToMany(targetEntity = Consulta.class, cascade = CascadeType.ALL)
+    @JoinColumn(name ="paciente_id", referencedColumnName = "id")
     private List<Consulta> Consul;
     @OneToMany(targetEntity = ProcedimentosRealizados.class, cascade = CascadeType.ALL)
     private List<ProcedimentosRealizados> procedimentosRealizados;

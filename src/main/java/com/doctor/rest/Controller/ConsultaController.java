@@ -1,5 +1,7 @@
 package com.doctor.rest.Controller;
 
+import com.doctor.rest.Dto.DtoForRequests.ConsultaPacienteDTO;
+import com.doctor.rest.Dto.DtoForResponse.PacienteComConsulta;
 import com.doctor.rest.Dto.PacienteRequest;
 import com.doctor.rest.Dto.PacienteResponse;
 import com.doctor.rest.Models.Consulta;
@@ -12,14 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+//import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@EnableSwagger2
+//@EnableSwagger2
 @RequestMapping("/api/consulta/")
 public class ConsultaController {
    @Autowired
@@ -49,7 +51,7 @@ public class ConsultaController {
     public List<Consulta> addConsulta(String rg, Consulta consulta){
         return services.addConsulta(rg, consulta);
     }
-    @PutMapping
+    @PutMapping("/updateConsulta")
     public List<Consulta> changeConsulta(String rg, int consulPos, @RequestBody Consulta consulta){
        return services.changeConsulta(rg, consulPos, consulta);
     }
@@ -80,6 +82,8 @@ public class ConsultaController {
     }
     @GetMapping("getConsultasPaciente")
     public List<PacienteResponse> getConsultasPaciente(){ return services.getConsultasPaciente();}
+    @GetMapping("/getConsultasPacienteByQuery")
+    public PacienteComConsulta getConsultasPacienteByQuery(String rg){ return services.getConsultaQuery(rg);}
     @PostMapping
     public List<ProcedimentosRealizados> addProcedimentos(String rg, ProcedimentosRealizados procedimentos)
     { return services.addProcedimento(rg, procedimentos);}

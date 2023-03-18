@@ -1,5 +1,8 @@
 package com.doctor.rest.Security;
 
+
+import com.doctor.rest.Filter.JwtFilter;
+import com.mysql.cj.Session;
 import com.mysql.cj.protocol.AuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,14 +15,21 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtFilter jwtFilter;
     @Bean
     public AuthenticationManager authenticationManager(){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -32,15 +42,23 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/swagger-ui/#/").permitAll()
+                .antMatchers("/api/auth/authenticate").permitAll()
+                .antMatchers("/swagger-ui/#/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .antMatchers("/api/auth/logged").hasAuthority("USER")
                 .antMatchers("/api/consulta/**").hasAuthority("USER")
-                .antMatchers("/api/consulta/addPaciente").hasAuthority("USER")
                 .antMatchers("/", "/csrf", "/v2/api-docs", "/swagger-resources/configuration/ui", "/configuration/ui", "/swagger-resources", "/swagger-resources/configuration/security", "/configuration/security", "/swagger-ui.html", "/webjars/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .csrf().disable()
-                .httpBasic();
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout()
+                .logoutUrl("/api/auth/logout");
+
     }
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -50,4 +68,5 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/swagger-resources/**");
         web.ignoring().antMatchers("/webjars/**");
     }
+
 }
