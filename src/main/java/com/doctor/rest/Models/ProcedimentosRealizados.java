@@ -8,9 +8,6 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.util.ArrayList;
-import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

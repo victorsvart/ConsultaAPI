@@ -3,8 +3,9 @@ package com.doctor.rest.JWT;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +14,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.crypto.SecretKey;
 @Component
 public class JWTUtility implements Serializable {
     private static final long serialVersionUID = 234234523523L;
     public static final long JWT_TOKEN_VALIDITY =  5 * 60 * 60;
 
     private String secretKey = "SIS3432434TEMA434255DEMARC5235235ACAODEC234242ONS5253UL2523523TAECONTR25235OLEDOPA52454CIE2452NTE";
+    SecretKey secret =  Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey)); 
 
     public String getUsernameFromToken(String token){
         return getClaimFromToken(token, Claims::getSubject);
@@ -31,7 +35,8 @@ public class JWTUtility implements Serializable {
         return claimResolver.apply(claims);
     }
     public Claims getAllClaimsFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        //return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody();
     }
 
     private Boolean isTokenExpired(String token){
@@ -45,7 +50,7 @@ public class JWTUtility implements Serializable {
     private String doGenerateToken(Map<String, Object> claims, String subject){
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
+                .signWith(secret).compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails){
