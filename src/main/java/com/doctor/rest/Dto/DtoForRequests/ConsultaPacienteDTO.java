@@ -1,11 +1,6 @@
 package com.doctor.rest.Dto.DtoForRequests;
 
 import com.doctor.rest.Models.Consulta;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 import java.util.List;
 
 

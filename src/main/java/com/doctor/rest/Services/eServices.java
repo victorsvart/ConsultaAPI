@@ -2,7 +2,6 @@ package com.doctor.rest.Services;
 
 import com.doctor.rest.Dto.DtoForRequests.ConsultaDTO;
 import com.doctor.rest.Dto.DtoForRequests.ConsultaPacienteDTO;
-import com.doctor.rest.Dto.DtoForResponse.ConsultaParaPaciente;
 import com.doctor.rest.Dto.DtoForResponse.PacienteComConsulta;
 import com.doctor.rest.Dto.PacienteResponse;
 import com.doctor.rest.Models.Consulta;
@@ -14,8 +13,6 @@ import com.doctor.rest.Repo.ProcedimentosRealizadosRepository;
 import com.doctor.rest.Repo.UserRepository;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -38,6 +35,10 @@ public class eServices {
         horarios = new ArrayList<String>();
     }
 
+
+    public Paciente addPaciente(Paciente paciente) {
+        return pacienteRepository.save(paciente);
+    }
 
     public Optional<Paciente> findById(int ID) {
         return pacienteRepository.findByID(ID);
@@ -118,6 +119,7 @@ public class eServices {
         return consultaRepository.saveAll(consultas);
 
     }
+    
 
     public List<Consulta> changeConsulta(String rg, int consulPos, Consulta consulta) {
         Paciente paciente = pacienteRepository.findByRG(rg).get();

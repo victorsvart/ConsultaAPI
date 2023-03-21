@@ -4,13 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import javax.persistence.*;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.List;
 @Data
 @AllArgsConstructor
