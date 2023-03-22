@@ -21,6 +21,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import javax.websocket.server.PathParam;
+
 @RestController
 @CrossOrigin("http://localhost:4200")
 //@EnableSwagger2
@@ -52,16 +54,20 @@ public class ConsultaController {
     public ResponseEntity<Optional<Paciente>> getPacienteByRG(@RequestParam  String rg){
        return new ResponseEntity<Optional<Paciente>>(services.findByRg(rg), HttpStatus.OK);
    }
+   // @GetMapping("getConsultaByRg/{rg}")
+   // public void getConsultaByRg(@PathVariable String rg){
+   //    services.getConsultaByRg(rg);
+   // }
    
-   @PutMapping("addConsulta")
+   @PostMapping("addConsulta/{rg}")
    
-   public List<Consulta> addConsulta(String rg, Consulta consulta){
+   public List<Consulta> addConsulta(@PathVariable String rg, @RequestBody Consulta consulta){
         return services.addConsulta(rg, consulta);
     }
    
-    @PutMapping("/updateConsulta")
+    @PostMapping("updateConsulta/{rg}/{consulPos}")
     
-    public List<Consulta> changeConsulta(String rg, int consulPos, @RequestBody Consulta consulta){
+    public List<Consulta> changeConsulta(@PathVariable String rg, @PathVariable int consulPos, @RequestBody Consulta consulta){
        return services.changeConsulta(rg, consulPos, consulta);
     }
    

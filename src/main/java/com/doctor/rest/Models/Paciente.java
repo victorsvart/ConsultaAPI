@@ -40,6 +40,8 @@ public class Paciente {
     @OneToMany(targetEntity = ProcedimentosRealizados.class, cascade = CascadeType.ALL)
     private List<ProcedimentosRealizados> procedimentosRealizados;
 
+    
+
 
 
 }

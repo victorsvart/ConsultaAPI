@@ -17,6 +17,8 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer> {
     Optional<Paciente> findByRG(String rg);
     void deleteAll();
 
+    
+
     @Query("SELECT new com.doctor.rest.Dto.PacienteResponse(c.firstName, c.lastName, c.Endereco, c.RG, c.Age, z.DataConsulta, z.HorarioConsulta) FROM Paciente c JOIN c.Consul z")
     List<PacienteResponse> getJoinInformation();
 

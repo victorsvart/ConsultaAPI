@@ -125,7 +125,7 @@ public class eServices {
         Paciente paciente = pacienteRepository.findByRG(rg).get();
         List<Consulta> consultas = paciente.getConsul();
         Consulta consultaInPos = null;
-        for (int i = 0; i <= consulPos - 1; i++) {
+        for (int i = 0; i <= consulPos; i++) {
             consultaInPos = consultas.get(i);
         }
         consultaInPos.setDataConsulta(consulta.getDataConsulta());
@@ -141,5 +141,8 @@ public class eServices {
         procedimentos.add(procedimentosRealizados);
         return procedimentosRealizadosRepository.saveAll(procedimentos);
     }
+    // public Consulta getConsultaByRG(String rg){
+    //     return consultaRepository.getConsultaByRG(rg);
+    // }
 
 }
