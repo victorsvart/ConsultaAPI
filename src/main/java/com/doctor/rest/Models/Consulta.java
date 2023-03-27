@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+//import com.doctor.rest.ConverterDate.DateConverter;
+
 import javax.persistence.*;
 
 import java.time.LocalDate;
@@ -17,9 +19,13 @@ public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate DataConsulta;
+
     private String HorarioConsulta;
+    
+    private String Procedimento;
     private int isDeleted;
 
 }
