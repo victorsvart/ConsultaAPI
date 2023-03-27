@@ -24,7 +24,7 @@ public class Paciente {
 
     private String Laudo;
 
-    private String RG;
+    private String CPF;
 
     private String Telefone;
 
@@ -37,8 +37,7 @@ public class Paciente {
     @OneToMany(targetEntity = Consulta.class, cascade = CascadeType.ALL)
     @JoinColumn(name ="paciente_id", referencedColumnName = "id")
     private List<Consulta> Consul;
-    @OneToMany(targetEntity = ProcedimentosRealizados.class, cascade = CascadeType.ALL)
-    private List<ProcedimentosRealizados> procedimentosRealizados;
+   
 
     
 

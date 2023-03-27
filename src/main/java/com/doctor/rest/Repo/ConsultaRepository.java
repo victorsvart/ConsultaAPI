@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
 
-    @Query(value = "SELECT c.data_consulta as dataConsulta, c.horario_consulta as horarioConsulta FROM crudpacientes.consulta c JOIN crudpacientes.paciente z WHERE c.is_deleted = 0 AND z.rg = :keyword AND c.paciente_id = z.id", nativeQuery = true)
+    @Query(value = "SELECT c.data_consulta as dataConsulta, c.horario_consulta as horarioConsulta FROM crudpacientes.consulta c JOIN crudpacientes.paciente z WHERE c.is_deleted = 0 AND z.cpf = :keyword AND c.paciente_id = z.id", nativeQuery = true)
     List<ConsultaDTO> findByKeyword(@Param("keyword")String keyword);
 
    

@@ -6,10 +6,8 @@ import com.doctor.rest.Dto.DtoForResponse.PacienteComConsulta;
 import com.doctor.rest.Dto.PacienteResponse;
 import com.doctor.rest.Models.Consulta;
 import com.doctor.rest.Models.Paciente;
-import com.doctor.rest.Models.ProcedimentosRealizados;
 import com.doctor.rest.Repo.ConsultaRepository;
 import com.doctor.rest.Repo.PacienteRepository;
-import com.doctor.rest.Repo.ProcedimentosRealizadosRepository;
 import com.doctor.rest.Repo.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +19,14 @@ import java.util.*;
 public class eServices {
     private final PacienteRepository pacienteRepository;
     private final ConsultaRepository consultaRepository;
-    private final ProcedimentosRealizadosRepository procedimentosRealizadosRepository;
+   
     private final UserRepository userRepository;
     private final List<String> horarios;
 
     public eServices(PacienteRepository pacienteRepository, ConsultaRepository consultaRepository
-            , ProcedimentosRealizadosRepository
-                             procedimentosRealizadosRepository, UserRepository userRepository) {
+            ,  UserRepository userRepository) {
         this.pacienteRepository = pacienteRepository;
         this.consultaRepository = consultaRepository;
-        this.procedimentosRealizadosRepository = procedimentosRealizadosRepository;
         this.userRepository = userRepository;
         horarios = new ArrayList<String>();
     }
@@ -44,8 +40,8 @@ public class eServices {
         return pacienteRepository.findByID(ID);
     }
 
-    public Optional<Paciente> findByRg(String rg) {
-        return pacienteRepository.findByRG(rg);
+    public Optional<Paciente> findByCPF(String CPF) {
+        return pacienteRepository.findByCPF(CPF);
     }
 
     public void deleteAll() {
@@ -63,8 +59,7 @@ public class eServices {
         pacienteUpdate.setNascimento(paciente.getNascimento());
         pacienteUpdate.setProfissao(paciente.getProfissao());
         pacienteUpdate.setTelefone(paciente.getTelefone());
-        pacienteUpdate.setRG(paciente.getRG());
-        pacienteUpdate.setProcedimentosRealizados(paciente.getProcedimentosRealizados());
+        pacienteUpdate.setCPF(paciente.getCPF());
         pacienteRepository.save(pacienteUpdate);
     }
 
@@ -112,8 +107,8 @@ public class eServices {
     }
 
 
-    public List<Consulta> addConsulta(String rg, Consulta consulta) {
-        Paciente paciente = pacienteRepository.findByRG(rg).get();
+    public List<Consulta> addConsulta(String CPF, Consulta consulta) {
+        Paciente paciente = pacienteRepository.findByCPF(CPF).get();
         List<Consulta> consultas = paciente.getConsul();
         consultas.add(consulta);
         return consultaRepository.saveAll(consultas);
@@ -122,7 +117,7 @@ public class eServices {
     
 
     public List<Consulta> changeConsulta(String rg, int consulPos, Consulta consulta) {
-        Paciente paciente = pacienteRepository.findByRG(rg).get();
+        Paciente paciente = pacienteRepository.findByCPF(rg).get();
         List<Consulta> consultas = paciente.getConsul();
         Consulta consultaInPos = null;
         for (int i = 0; i <= consulPos; i++) {
@@ -131,18 +126,20 @@ public class eServices {
         consultaInPos.setDataConsulta(consulta.getDataConsulta());
         consultaInPos.setHorarioConsulta(consulta.getHorarioConsulta());
         consultaInPos.setIsDeleted(consulta.getIsDeleted());
+        consultaInPos.setProcedimento(consulta.getProcedimento());
         return Collections.singletonList(consultaRepository.save(consultaInPos));
 
     }
 
-    public List<ProcedimentosRealizados> addProcedimento(String rg, ProcedimentosRealizados procedimentosRealizados) {
-        Paciente paciente = pacienteRepository.findByRG(rg).get();
-        List<ProcedimentosRealizados> procedimentos = paciente.getProcedimentosRealizados();
-        procedimentos.add(procedimentosRealizados);
-        return procedimentosRealizadosRepository.saveAll(procedimentos);
+    public void deleteConsulta(String CPF, int consulPos) {
+        Paciente paciente = pacienteRepository.findByCPF(CPF).get();
+        List<Consulta> consultas = paciente.getConsul();
+        Consulta consultaInPos = null;
+        for (int i = 0; i < consulPos; i++) {
+            consultaInPos = consultas.get(i);
+        }
+        consultaRepository.delete(consultaInPos);
+
     }
-    // public Consulta getConsultaByRG(String rg){
-    //     return consultaRepository.getConsultaByRG(rg);
-    // }
 
 }

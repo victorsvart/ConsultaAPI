@@ -1,12 +1,10 @@
 package com.doctor.rest.Controller;
 
 import com.doctor.rest.Dto.DtoForResponse.PacienteComConsulta;
-import com.doctor.rest.Dto.PacienteRequest;
 import com.doctor.rest.Dto.PacienteResponse;
 import com.doctor.rest.Dto.DtoForRequests.PacienteDTO;
 import com.doctor.rest.Models.Consulta;
 import com.doctor.rest.Models.Paciente;
-import com.doctor.rest.Models.ProcedimentosRealizados;
 import com.doctor.rest.Repo.PacienteRepository;
 import com.doctor.rest.Services.eServices;
 
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-
-import javax.websocket.server.PathParam;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
@@ -46,29 +42,29 @@ public class ConsultaController {
    
    @GetMapping("getAllPacientes")
     public List<Paciente> getAllPacientes(){
-       return pacienteRepository.findAll();
+       return pacienteRepository.findAllc();
    }
    
    @GetMapping("getPacienteByRG")
    
-    public ResponseEntity<Optional<Paciente>> getPacienteByRG(@RequestParam  String rg){
-       return new ResponseEntity<Optional<Paciente>>(services.findByRg(rg), HttpStatus.OK);
+    public ResponseEntity<Optional<Paciente>> getPacienteByCPF(@RequestParam  String CPF){
+       return new ResponseEntity<Optional<Paciente>>(services.findByCPF(CPF), HttpStatus.OK);
    }
    // @GetMapping("getConsultaByRg/{rg}")
    // public void getConsultaByRg(@PathVariable String rg){
    //    services.getConsultaByRg(rg);
    // }
    
-   @PostMapping("addConsulta/{rg}")
+   @PostMapping("addConsulta/{cpf}")
    
-   public List<Consulta> addConsulta(@PathVariable String rg, @RequestBody Consulta consulta){
-        return services.addConsulta(rg, consulta);
+   public List<Consulta> addConsulta(@PathVariable String cpf, @RequestBody Consulta consulta){
+        return services.addConsulta(cpf, consulta);
     }
    
-    @PostMapping("updateConsulta/{rg}/{consulPos}")
+    @PostMapping("updateConsulta/{CPF}/{consulPos}")
     
-    public List<Consulta> changeConsulta(@PathVariable String rg, @PathVariable int consulPos, @RequestBody Consulta consulta){
-       return services.changeConsulta(rg, consulPos, consulta);
+    public List<Consulta> changeConsulta(@PathVariable String CPF, @PathVariable int consulPos, @RequestBody Consulta consulta){
+       return services.changeConsulta(CPF, consulPos, consulta);
     }
    
    @DeleteMapping("deleteAll")
@@ -110,12 +106,16 @@ public class ConsultaController {
     
     @GetMapping("/getConsultasPacienteByQuery")
     
-    public PacienteComConsulta getConsultasPacienteByQuery(String rg){ return services.getConsultaQuery(rg);}
+    public PacienteComConsulta getConsultasPacienteByQuery(String CPF){ return services.getConsultaQuery(CPF);}
+
+    @DeleteMapping("deleteConsulta")
+    public String deleteConsulta(String CPF, int consultaPos){
+      this.services.deleteConsulta(CPF, consultaPos);
+      return "Consulta deletada";
+      
+    }
     
-    @PostMapping
-    
-    public List<ProcedimentosRealizados> addProcedimentos(String rg, ProcedimentosRealizados procedimentos)
-    { return services.addProcedimento(rg, procedimentos);}
+   
 
 
 }

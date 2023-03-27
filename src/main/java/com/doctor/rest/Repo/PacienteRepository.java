@@ -14,18 +14,21 @@ import java.util.Optional;
 @Repository
 public interface PacienteRepository extends JpaRepository<Paciente, Integer> {
     Optional<Paciente> findByID(int ID);
-    Optional<Paciente> findByRG(String rg);
+    Optional<Paciente> findByCPF(String CPF);
     void deleteAll();
+
+    @Query("SELECT c FROM Paciente c")
+    List<Paciente> findAllc();
 
     
 
-    @Query("SELECT new com.doctor.rest.Dto.PacienteResponse(c.firstName, c.lastName, c.Endereco, c.RG, c.Age, z.DataConsulta, z.HorarioConsulta) FROM Paciente c JOIN c.Consul z")
+    @Query("SELECT new com.doctor.rest.Dto.PacienteResponse(c.firstName, c.lastName, c.Endereco, c.CPF, c.Age, z.DataConsulta, z.HorarioConsulta) FROM Paciente c JOIN c.Consul z")
     List<PacienteResponse> getJoinInformation();
 
-    @Query("SELECT new com.doctor.rest.Dto.PacienteResponse(c.firstName, c.lastName, c.Endereco, c.RG, c.Age, z.DataConsulta, z.HorarioConsulta) FROM Paciente c JOIN c.Consul z WHERE z.isDeleted = 0")
+    @Query("SELECT new com.doctor.rest.Dto.PacienteResponse(c.firstName, c.lastName, c.Endereco, c.CPF, c.Age, z.DataConsulta, z.HorarioConsulta) FROM Paciente c JOIN c.Consul z WHERE z.isDeleted = 0")
     List<PacienteResponse> getConsultasPaciente();
 
-    @Query(value = "SELECT c.first_name as firstName, c.last_name as lastName, c.rg FROM crudpacientes.paciente c JOIN crudpacientes.consulta z WHERE c.rg = :keyword AND z.paciente_id = c.id AND z.is_deleted = 0", nativeQuery = true)
+    @Query(value = "SELECT c.first_name as firstName, c.last_name as lastName, c.cpf FROM crudpacientes.paciente c JOIN crudpacientes.consulta z WHERE c.cpf = :keyword AND z.paciente_id = c.id AND z.is_deleted = 0", nativeQuery = true)
     List<ConsultaPacienteDTO> findByKeyword(@Param("keyword")String keyword);
 
 
