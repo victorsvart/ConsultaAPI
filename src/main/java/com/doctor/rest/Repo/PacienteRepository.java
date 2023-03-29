@@ -20,8 +20,6 @@ public interface PacienteRepository extends JpaRepository<Paciente, Integer> {
     @Query("SELECT c FROM Paciente c")
     List<Paciente> findAllc();
 
-    
-
     @Query("SELECT new com.doctor.rest.Dto.PacienteResponse(c.firstName, c.lastName, c.Endereco, c.CPF, c.Age, z.DataConsulta, z.HorarioConsulta) FROM Paciente c JOIN c.Consul z")
     List<PacienteResponse> getJoinInformation();
 
