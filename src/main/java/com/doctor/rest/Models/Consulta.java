@@ -20,12 +20,13 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+   
     private LocalDate DataConsulta;
 
     private String HorarioConsulta;
     
     private String Procedimento;
+
     private int isDeleted;
 
 }
