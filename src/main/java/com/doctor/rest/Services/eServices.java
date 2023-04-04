@@ -116,8 +116,8 @@ public class eServices {
     }
     
 
-    public List<Consulta> changeConsulta(String rg, int consulPos, Consulta consulta) {
-        Paciente paciente = pacienteRepository.findByCPF(rg).get();
+    public List<Consulta> changeConsulta(String cpf, int consulPos, Consulta consulta) {
+        Paciente paciente = pacienteRepository.findByCPF(cpf).get();
         List<Consulta> consultas = paciente.getConsul();
         Consulta consultaInPos = null;
         for (int i = 0; i <= consulPos; i++) {
@@ -138,7 +138,8 @@ public class eServices {
         for (int i = 0; i < consulPos; i++) {
             consultaInPos = consultas.get(i);
         }
-        consultaRepository.delete(consultaInPos);
+        int consultaID = consultaInPos.getID();
+        consultaRepository.deleteById(consultaID);
 
     }
 
